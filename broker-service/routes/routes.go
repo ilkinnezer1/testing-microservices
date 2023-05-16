@@ -14,7 +14,7 @@ func BaseRoutes() *echo.Echo {
 	e.Use(middleware.Logger())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"https://*", "https://*"},
+		AllowOrigins:     []string{"http://*", "http://*"},
 		AllowHeaders:     []string{echo.HeaderAccept, echo.HeaderContentType, echo.HeaderXCSRFToken, echo.HeaderAuthorization},
 		AllowMethods:     []string{echo.PUT, echo.POST, echo.GET, echo.DELETE, echo.PATCH},
 		ExposeHeaders:    []string{"Link"},
@@ -24,6 +24,6 @@ func BaseRoutes() *echo.Echo {
 
 	// Check Connection
 	e.Use(handlers.Heartbeat("ping"))
-	e.GET("/broker", api.BrokerHandler)
+	e.POST("/broker", api.BrokerHandler)
 	return e
 }
