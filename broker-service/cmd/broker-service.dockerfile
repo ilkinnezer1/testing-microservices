@@ -3,11 +3,11 @@ FROM golang:1.18-alpine as builder
 
 RUN mkdir /app
 
-COPY docker /app
+COPY . /app
 
 WORKDIR /app
 
-RUN CGO_ENABLED=0 go build -o brokerService ../../broker-service/cmd/main.go
+RUN CGO_ENABLED=0 go build -o brokerService ./cmd
 
 RUN chmod +x /app/brokerService
 

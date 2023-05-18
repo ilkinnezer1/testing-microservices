@@ -4,10 +4,20 @@ services:
   broker-service:
     build:
       context: ./../broker-service
-      dockerfile: Dockerfile
+      dockerfile: ../broker-service/cmd/broker-service.dockerfile
     restart: always
     ports:
       - "7000:7000"
+    deploy:
+      mode: replicated
+      replicas: 1
+  auth-service:
+    build:
+      context: ./../auth-service
+      dockerfile: ../auth-service/cmd/auth-service.dockerfile
+    restart: always
+    ports:
+      - "6000:6000"
     deploy:
       mode: replicated
       replicas: 1
