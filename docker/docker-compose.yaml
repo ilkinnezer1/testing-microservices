@@ -11,6 +11,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
   auth-service:
     build:
       context: ./../auth-service
@@ -21,3 +22,23 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+
+  postgres:
+    image: 'postgres:14.2'
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: password
+       POSTGRES_DB: users
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgres/data/
+volumes:
+  db-data:
+    external: true
