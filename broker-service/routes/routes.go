@@ -25,5 +25,6 @@ func BaseRoutes() *echo.Echo {
 	// Check Connection
 	e.Use(handlers.Heartbeat("ping"))
 	e.POST("/broker", api.BrokerHandler)
+	e.POST("/handle", api.SubmissionHandler)
 	return e
 }

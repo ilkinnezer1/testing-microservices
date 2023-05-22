@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"authentication/api"
+	"authentication/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -18,6 +20,9 @@ func AuthRoutes() *echo.Echo {
 		AllowCredentials: true,
 		MaxAge:           300,
 	}))
+
+	e.Use(handlers.Heartbeat("/ping"))
+	e.POST("/auth", api.Authenticate)
 
 	return e
 }

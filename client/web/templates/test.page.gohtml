@@ -9,6 +9,10 @@
                 <a id="broker" class="btn btn-outline-primary" href="javascript:void(0);">
                     Test Broker
                 </a>
+
+                <a id="auth" class="btn btn-outline-primary" href="javascript:void(0);">
+                    Test Auth
+                </a>
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
                 </div>
@@ -50,6 +54,47 @@
                     received.textContent = JSON.stringify(data, undefined, 4);
                     if (data.error) {
                         console.log(data.message);
+                    } else{
+                        outputSection.textContent += `Response from broker service: ${data.message}`;
+                    }
+                })
+                .catch(err => {
+                    outputSection.textContent += "Error:" + err;
+                })
+        })
+
+        // Authentication Service
+
+        const authBtn = document.getElementById("auth");
+
+        const payload = {
+            action: "auth",
+            auth : {
+                email: "admin@example.com",
+                password: "verysecret"
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json")
+
+        const body = {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers:headers,
+        }
+        // Add Listener
+        authBtn.addEventListener("click", () => {
+            const body = {
+                method: "POST"
+            }
+            fetch("http:\/\/localhost:6060/handle", body)
+                .then(res => res.json())
+                .then(data =>{
+                    sent.textContent = JSON.stringify(payload, undefined, 4);
+                    received.textContent = JSON.stringify(data, undefined, 4);
+                    if (data.error) {
+                        outputSection.textContent += `Error: ${data.message}`
                     } else{
                         outputSection.textContent += `Response from broker service: ${data.message}`;
                     }

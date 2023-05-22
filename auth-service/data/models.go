@@ -13,10 +13,6 @@ const dbTimeout = time.Second * 3
 
 var db *sql.DB
 
-type Models struct {
-	User User
-}
-
 type User struct {
 	ID        int       `json:"ID"`
 	Email     string    `json:"email"`
@@ -31,9 +27,14 @@ type User struct {
 // Create a new instance of data package returns model which embeds all types
 
 func New(dbPool *sql.DB) Models {
+	db = dbPool
 	return Models{
 		User: User{},
 	}
+}
+
+type Models struct {
+	User User
 }
 
 func (u *User) GetAll() ([]*User, error) {
@@ -72,7 +73,7 @@ func (u *User) GetAll() ([]*User, error) {
 	return users, err
 }
 
-func (u *User) GetByEmail(email string) (*User, error) {
+func GetByEmail(email string) (*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 

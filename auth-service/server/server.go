@@ -4,6 +4,10 @@ import (
 	"authentication/data"
 	"authentication/routes"
 	"database/sql"
+	_ "github.com/jackc/pgconn"
+	_ "github.com/jackc/pgx/v4"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"time"
@@ -22,16 +26,20 @@ func openDB(dsn string) (*sql.DB, error) {
 		panic(err)
 	}
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-
-	}
+	//err = db.Ping()
+	//if err != nil {
+	//	panic(err)
+	//
+	//}
 	return db, nil
 }
 
 func connectToDB() *sql.DB {
-	dsn := os.Getenv("DSN")
+	_ = godotenv.Load()
+	dsn := os.Getenv("DSNN")
+
+	log.Print(dsn)
+
 	for {
 		connection, err := openDB(dsn)
 		if err != nil {
@@ -66,7 +74,7 @@ func Start() {
 		Models: data.New(conn),
 	}
 
-	if err := e.Start(":6000"); err != nil {
+	if err := e.Start(":6060"); err != nil {
 		panic(err)
 	}
 }
